@@ -25,7 +25,11 @@ async function bootstrap() {
   app.enableCors();
 
   const PORT = process.env.PORT || 3000;
-
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   await app.listen(PORT, () => {
     console.log(`Running API in MODE :${process.env.NODE_ENV} on Port: ${PORT}`);
   });
