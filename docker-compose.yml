@@ -73,7 +73,7 @@ services:
       - PMA_PORT=3306
       - MYSQL_ROOT_PASSWORD=root_password_123
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       - mysql_db
 
