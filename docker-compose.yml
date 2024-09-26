@@ -1,0 +1,81 @@
+
+
+# version: '3.8'
+
+# services:
+#   nestjs_api:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - '3000:3000'
+#     environment:
+#       - PORT=3000
+#       - NODE_ENV=development
+#     volumes:
+#       - ./src:/usr/src/app/src
+
+#   mysql_db:
+#     image: mysql
+#     ports:
+#       - "3307:3306" # พอร์ต 3307 ของเครื่อง host map ไปยัง 3306 ของ container
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=root_password_123
+#       - MYSQL_DATABASE=nestjs_docker
+#       - MYSQL_USER=testuser
+#       - MYSQL_PASSWORD=testuser123
+#       # ลบ MYSQL_TCP_PORT
+      
+
+
+#   phpmyadmin:
+#     image: phpmyadmin/phpmyadmin
+#     environment:
+#       - PMA_HOST=mysql_db
+#       - PMA_PORT=3306
+#       - MYSQL_ROOT_PASSWORD=root_password_123
+#     ports:
+#       - "8080:80"
+#     depends_on:
+#       - mysql_db
+
+#version: '3.8'
+
+services:
+  nestjs_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+    volumes:
+      - ./src:/usr/src/app/src
+
+  mysql_db:
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password_123
+      - MYSQL_DATABASE=nestjs_docker
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=testuser123
+    volumes:
+      - mysql_data:/var/lib/mysql # ใช้ volume สำหรับเก็บข้อมูล
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql_db
+      - PMA_PORT=3306
+      - MYSQL_ROOT_PASSWORD=root_password_123
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql_db
+
+volumes:
+  mysql_data: # กำหนด volume
