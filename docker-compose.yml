@@ -39,7 +39,9 @@
 #     depends_on:
 #       - mysql_db
 
-#version: '3.8'
+
+
+version: '3'
 
 services:
   nestjs_api:
@@ -47,10 +49,9 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3001:3000'
+      - '3001:3000'  # expose NestJS app on port 3000 internally
     environment:
       - PORT=3000
-      - NODE_ENV=development
     volumes:
       - ./src:/usr/src/app/src
 
@@ -64,18 +65,18 @@ services:
       - MYSQL_USER=testuser
       - MYSQL_PASSWORD=testuser123
     volumes:
-      - mysql_data:/var/lib/mysql # ใช้ volume สำหรับเก็บข้อมูล
+      - mysql_data:/var/lib/mysql
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      - PMA_HOST=mysql_db
-      - PMA_PORT=3306
-      - MYSQL_ROOT_PASSWORD=root_password_123
+  nginx_proxy:
+    image: nginx
     ports:
-      - "8081:80"
+      - '80:80'  # expose Nginx on port 80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - mysql_db
+      - nestjs_api
 
 volumes:
-  mysql_data: # กำหนด volume
+  mysql_data:
+
+
